@@ -9,7 +9,7 @@ export const App = () => {
     <div>
       <header className={css.header}>
         <NavLink className={({isActive}) => `${css.navLink} ${isActive ? css.active : ''}`} to="/">Home</NavLink>
-        <NavLink className={({isActive}) => `${css.navLink} ${isActive ? css.active : ''}`} to="/movies">Movies</NavLink>
+        <NavLink className={({isActive}) => `${css.navLink} ${isActive ? css.active : ''}`} to="/movies" end>Movies</NavLink>
       </header>
       <main>
         <Routes>
