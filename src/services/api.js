@@ -33,3 +33,36 @@ export const requestMovieById = async (id) => {
   const data = await axios(options);
   return data;
 }
+
+export const requestMovieCast = async (id) => {
+  const options = {
+    method: 'GET',
+    url: `${url}/movie/${id}/credits`,
+    params: { language: 'en-US', api_key: API_KEY },
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${AUTH_KEY}`,
+    },
+  };
+
+  const data = await axios(options);
+  return data;
+}
+
+export const requestMovieReviews = async (id) => {
+  const options = {
+    method: 'GET',
+    url: `${url}/movie/${id}/reviews`,
+    params: { language: 'en-US', page: 1, api_key: API_KEY },
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${AUTH_KEY}`,
+    },
+  };
+
+  const data = await axios(options);
+  return data;
+}
+
+
+// 'https://api.themoviedb.org/3/movie/movie_id/reviews?language=en-US&page=1'

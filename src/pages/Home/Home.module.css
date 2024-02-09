@@ -1,0 +1,17 @@
+.container {
+    padding: 20px;
+}
+
+.link {
+    display: inline-block;
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: black;
+    font-weight: 600;
+    transition: all .03s;
+}
+
+.link:hover,
+.link:focus {
+    color: rgb(212, 139, 5);
+}
