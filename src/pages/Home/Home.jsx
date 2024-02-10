@@ -1,20 +1,28 @@
 import { useState, useEffect } from 'react'
 import { requestTrendingMovies } from 'services/api';
 import { Link, useLocation } from 'react-router-dom';
+import { Loader } from 'components/Loader/Loader';
+import { nanoid } from 'nanoid';
+
 import css from './Home.module.css';
 
 const Home = () => {
     const [movies, setMovies] = useState({});
     const location = useLocation();
+    const [isLoadMore, setIsLoadMore] = useState(false);
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
+                setIsLoadMore(true);
                 const resp = await requestTrendingMovies();
                 setMovies(resp.data.results);
             }
             catch (error) {
                 console.error('Error fetching movies:', error);
+            }
+            finally {
+                setIsLoadMore(false);
             }
           };
         fetchMovies();
@@ -23,11 +31,12 @@ const Home = () => {
     return (
         <div className={css.container}>
             <h1>Trending today</h1>
-            <ul>
+            {isLoadMore && <Loader />}
+            {!isLoadMore && (
+                <ul>
                 {Array.isArray(movies) && movies.map(movie => {
                     return (
-                        // добавити генерацію ключа, якщо немає ID
-                        <li key={movie.id}>
+                        <li key={nanoid()}>
                             <Link className={css.link} state={{from: location}} to={`/movies/${movie.id}`}>
                                 <span className={css.linkText}>{movie.title || movie.name}</span>
                             </Link>
@@ -35,6 +44,7 @@ const Home = () => {
                     );
                 })}
             </ul>
+            )}
         </div>
     )
 }

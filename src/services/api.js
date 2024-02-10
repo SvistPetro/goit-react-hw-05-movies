@@ -63,6 +63,3 @@ export const requestMovieReviews = async (id) => {
   const data = await axios(options);
   return data;
 }
-
-
-// 'https://api.themoviedb.org/3/movie/movie_id/reviews?language=en-US&page=1'
