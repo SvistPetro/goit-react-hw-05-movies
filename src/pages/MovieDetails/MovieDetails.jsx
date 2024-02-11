@@ -10,20 +10,22 @@ const Reviews = lazy(() => import('components/Reviews/Reviews'));
 const MovieDetails = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState({});
+  const [error, setError] = useState(null);
   const [isLoadMore, setIsLoadMore] = useState(false);
   const location = useLocation();
   const backLinhRef = useRef(location.state?.from ?? "/");
 
   useEffect(() => {
+    if (!movieId) return;
+
     const fetchMovies = async () => {
         try {
-          if (!movieId) {return}
           setIsLoadMore(true);
           const resp = await requestMovieById(movieId);
           setMovie(resp.data);
         }
         catch (error) {
-          console.error('Error fetching movies:', error);
+          setError(error);
         }
         finally {
           setIsLoadMore(false);
@@ -39,7 +41,8 @@ const MovieDetails = () => {
   return (
     <div>
       {isLoadMore && <Loader />}
-      {!isLoadMore && (
+      {error && <p>Something went wrong...</p>}
+      {movie && (
         <>
           <div className={css.container}>
             <Link to={backLinhRef.current} className={css.button}>← Go back</Link>

@@ -8,14 +8,15 @@ import css from './Reviews.module.css';
 const Reviews = () => {
 
     const { movieId } = useParams();
-    const [reviews, setReviews] = useState([]);
+    const [reviews, setReviews] = useState(null);
     const [error, setError] = useState(null);
     const [isLoadMore, setIsLoadMore] = useState(false);
 
     useEffect(() => {
+        if (!movieId) return;
+
         const fetchMoviesReviews = async () => {
             try {
-                if (!movieId) {return}
                 setIsLoadMore(true);
 
                 const resp = await requestMovieReviews(movieId);
@@ -37,7 +38,7 @@ const Reviews = () => {
             {isLoadMore && <Loader />}
             {error && <p>Something went wrong...</p>}
             <ul className={css.list}>
-                {!isLoadMore && reviews.length !== 0? (reviews.map(({ author, content}) => {
+                {reviews !== null && reviews?.length > 0? (reviews.map(({ author, content}) => {
                         return (
                             <li key={nanoid()} className={css.item}>
                                 <h3 className={css.name}>{author}</h3>

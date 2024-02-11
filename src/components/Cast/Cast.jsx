@@ -8,14 +8,15 @@ import css from './Cast.module.css';
 
 const Cast = () => {
     const { movieId } = useParams();
-    const [actors, setActors] = useState({});
+    const [actors, setActors] = useState(null);
     const [error, setError] = useState(null);
     const [isLoadMore, setIsLoadMore] = useState(false);
 
     useEffect(() => {
+        if (!movieId) return;
+
         const fetchMoviesCast = async () => {
             try {
-                if (!movieId) {return}
                 setIsLoadMore(true);
 
                 const resp = await requestMovieCast(movieId);
@@ -39,7 +40,7 @@ const Cast = () => {
             {isLoadMore && <Loader />}
             {error && <p>Something went wrong...</p>}
             <ul className={css.list}>
-                {Array.isArray(actors) && actors.map(({ profile_path, name, character }) => {
+                {actors !== null && actors?.length > 0? (actors.map(({ profile_path, name, character }) => {
                     return (
                         <li className={css.item} key={nanoid()}> 
                             <img className={css.img} 
@@ -55,7 +56,7 @@ const Cast = () => {
                             <p className={css.charter}>Character: {character}</p>
                         </li>
                     );
-                })}
+                })) : <div>We don't have any casts for this movie.</div>}
             </ul>
         </div>
     )

@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 import css from './Home.module.css';
 
 const Home = () => {
-    const [movies, setMovies] = useState({});
+    const [movies, setMovies] = useState(null);
     const location = useLocation();
     const [error, setError] = useState(null);
     const [isLoadMore, setIsLoadMore] = useState(false);
@@ -33,19 +33,17 @@ const Home = () => {
             <h1>Trending today</h1>
             {isLoadMore && <Loader />}
             {error && <p>Something went wrong...</p>}
-            {!isLoadMore && (
-                <ul>
-                {Array.isArray(movies) && movies.map(({ id, title, name }) => {
+            <ul>
+                {movies !== null && movies?.length > 0 && movies.map(({ id, title, name }) => {
                     return (
                         <li key={nanoid()}>
                             <Link className={css.link} state={{from: location}} to={`/movies/${id}`}>
-                                <span className={css.linkText}>{title || name}</span>
+                                <span>{title || name}</span>
                             </Link>
                         </li>
                     );
                 })}
             </ul>
-            )}
         </div>
     )
 }
