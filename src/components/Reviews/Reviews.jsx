@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { requestMovieReviews } from 'services/api';
 import { Loader } from 'components/Loader/Loader';
 import { nanoid } from 'nanoid';
-
 import css from './Reviews.module.css';
 
-const Reviews = ({id}) => {
-    // for ID used useParams
+const Reviews = () => {
+
+    const { movieId } = useParams();
     const [reviews, setReviews] = useState([]);
     const [error, setError] = useState(null);
     const [isLoadMore, setIsLoadMore] = useState(false);
@@ -14,10 +15,10 @@ const Reviews = ({id}) => {
     useEffect(() => {
         const fetchMoviesReviews = async () => {
             try {
-                if (!id) {return}
+                if (!movieId) {return}
                 setIsLoadMore(true);
 
-                const resp = await requestMovieReviews(id);
+                const resp = await requestMovieReviews(movieId);
                 setReviews(resp.data.results);
             }
             catch (error) {
@@ -29,7 +30,7 @@ const Reviews = ({id}) => {
         };
         
         fetchMoviesReviews();
-    },[id])
+    },[movieId])
 
     return (
         <div>

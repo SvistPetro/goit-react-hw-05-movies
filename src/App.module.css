@@ -1,11 +1,22 @@
+.container {
+    display: block;
+    margin: 0 auto;
+    max-width: 1280px;
+    height: 100%;
+}
+
 .header {
     display: flex;
-    width: 100%;
+    max-width: 1280px;
     padding: 15px;
     gap: 20px;
     box-shadow: 0px 3px 7px 0px rgba(0,0,0,0.21);
     -webkit-box-shadow: 0px 3px 7px 0px rgba(0,0,0,0.21);
     -moz-box-shadow: 0px 3px 7px 0px rgba(0,0,0,0.21);
+}
+
+.main {
+    max-width: 1280px;
 }
 
 .navLink {

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { requestMovieCast } from 'services/api';
 import { Loader } from 'components/Loader/Loader';
 import { nanoid } from 'nanoid';
-
 import css from './Cast.module.css';
 
-const Cast = ({id}) => {
-        // for ID used useParams
+
+const Cast = () => {
+    const { movieId } = useParams();
     const [actors, setActors] = useState({});
     const [error, setError] = useState(null);
     const [isLoadMore, setIsLoadMore] = useState(false);
@@ -14,14 +15,14 @@ const Cast = ({id}) => {
     useEffect(() => {
         const fetchMoviesCast = async () => {
             try {
-                if (!id) {return}
+                if (!movieId) {return}
                 setIsLoadMore(true);
 
-                const resp = await requestMovieCast(id);
+                const resp = await requestMovieCast(movieId);
                 setActors(resp.data.cast);
             }
             catch (error) {
-                setError(error);;
+                setError(error);
             }
             finally {
                 setIsLoadMore(false);
@@ -29,7 +30,7 @@ const Cast = ({id}) => {
         };
         
         fetchMoviesCast();
-    },[id])
+    },[movieId])
 
     const defaultImg = 'https://via.placeholder.com/200x300?text=No+Image+Available';
 
@@ -55,10 +56,8 @@ const Cast = ({id}) => {
                         </li>
                     );
                 })}
-        </ul>
-
+            </ul>
         </div>
-
     )
 }
 

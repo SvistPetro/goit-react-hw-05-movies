@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, Suspense, lazy } from 'react'
 import { NavLink, Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { requestMovieById } from 'services/api';
 import { Loader } from 'components/Loader/Loader';
-
 import css from './MovieDetails.module.css';
 
 const Cast = lazy(() => import('components/Cast/Cast'));
@@ -34,7 +33,7 @@ const MovieDetails = () => {
     fetchMovies();
   },[movieId])
 
-  const { poster_path, title, original_title, name, release_date, vote_average, overview, genres, id } = movie;
+  const { poster_path, title, original_title, name, release_date, vote_average, overview, genres } = movie;
   const defaultImg = 'https://via.placeholder.com/500x600?text=No+Image+Available';
     
   return (
@@ -75,8 +74,8 @@ const MovieDetails = () => {
           <div className={css.containerAddInfoContent}>
             <Suspense fallback={<Loader />}>
               <Routes>
-                <Route path='cast' element={<Cast id={id}/>}/>
-                <Route path='reviews' element={<Reviews id={id}/>}/>
+                <Route path='cast' element={<Cast />}/>
+                <Route path='reviews' element={<Reviews />}/>
               </Routes>
             </Suspense>
           </div>

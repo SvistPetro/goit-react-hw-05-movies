@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react'
-import { requestTrendingMovies } from 'services/api';
 import { Link, useLocation } from 'react-router-dom';
+import { requestTrendingMovies } from 'services/api';
 import { Loader } from 'components/Loader/Loader';
 import { nanoid } from 'nanoid';
-
 import css from './Home.module.css';
 
 const Home = () => {
     const [movies, setMovies] = useState({});
     const location = useLocation();
+    const [error, setError] = useState(null);
     const [isLoadMore, setIsLoadMore] = useState(false);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ const Home = () => {
                 setMovies(resp.data.results);
             }
             catch (error) {
-                console.error('Error fetching movies:', error);
+                setError(error);
             }
             finally {
                 setIsLoadMore(false);
@@ -32,13 +32,14 @@ const Home = () => {
         <div className={css.container}>
             <h1>Trending today</h1>
             {isLoadMore && <Loader />}
+            {error && <p>Something went wrong...</p>}
             {!isLoadMore && (
                 <ul>
-                {Array.isArray(movies) && movies.map(movie => {
+                {Array.isArray(movies) && movies.map(({ id, title, name }) => {
                     return (
                         <li key={nanoid()}>
-                            <Link className={css.link} state={{from: location}} to={`/movies/${movie.id}`}>
-                                <span className={css.linkText}>{movie.title || movie.name}</span>
+                            <Link className={css.link} state={{from: location}} to={`/movies/${id}`}>
+                                <span className={css.linkText}>{title || name}</span>
                             </Link>
                         </li>
                     );
