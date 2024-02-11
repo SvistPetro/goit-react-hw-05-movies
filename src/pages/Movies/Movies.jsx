@@ -52,9 +52,9 @@ const Movies = () => {
       <div>
         {isLoadMore && <Loader />}
         {error && <p>Something went wrong...</p>}
-        {movies?.length === 0 && <div>We have no movies for this request.</div>}
+        {movies !== null && movies?.length === 0 && <div>We have no movies for this request.</div>}
         <ul>
-          {movies !== null && movies?.length > 0? (movies.map(({ id, title, name }) => {
+          {movies !== null && movies?.length > 0 && movies.map(({ id, title, name }) => {
             return (
               <li key={nanoid()}>
                 <Link className={css.link} state={{from: location}} to={`/movies/${id}`}>
@@ -62,7 +62,7 @@ const Movies = () => {
                 </Link>
               </li>
             );
-          })) : <div>We have no movies for this request.</div>}
+          })}
         </ul>
       </div>
     </div>
